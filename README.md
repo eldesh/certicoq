@@ -123,7 +123,7 @@ Building the compiler:
 To build the OCaml version of the compiler and the
 `CertiCoq Compile` plugin, in `theories/`, run:
 
-    # sh make_plugin.sh
+    # ./make_plugin.sh
 
 To install Certicoq, do the following. This steps the above build steps.
     # make install

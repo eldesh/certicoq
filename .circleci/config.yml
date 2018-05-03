@@ -5,6 +5,8 @@ jobs:
     docker:
       - image: eldesh/coq:v8.7.1
         command: bash
+        environment:
+          TERM: xterm
     steps:
       - checkout
       - run: source ~/.profile

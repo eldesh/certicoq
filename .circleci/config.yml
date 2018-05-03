@@ -1,0 +1,39 @@
+version: 2
+jobs:
+  build:
+    working_directory: /tmp/certicoq
+    docker:
+      - image: eldesh/coq:v8.7.1
+        command: bash
+    steps:
+      - checkout
+      - run: source ~/.profile
+      - run:
+          name: Add extra repositories
+          command: |
+            opam repo add coq-released https://coq.inria.fr/opam/released
+            opam repo add coq-core-dev https://coq.inria.fr/opam/core-dev
+            opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
+      - run:
+          name: Setting up a switch with OCaml
+          command: |
+            opam switch -A 4.05.0
+            eval `opam config env`
+            opam pin add coq 8.7.1
+      - run:
+          name: Install CertiCoq's dependencies
+          command: |
+            opam install coq-template-coq coq-ext-lib coq-squiggle-eq.dev coq-paramcoq
+      - run:
+          name: Build plugin
+          command: make -j2
+      - run:
+          name: Install plugin
+          command: make install
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+
